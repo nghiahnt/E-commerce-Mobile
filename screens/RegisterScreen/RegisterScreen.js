@@ -4,7 +4,7 @@ import { SafeAreaView, KeyboardAvoidingView } from "react-native";
 
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-import images from "../assets/images";
+import images from "../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 
 const RegisterScreen = () => {

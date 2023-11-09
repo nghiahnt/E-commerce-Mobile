@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+
+const connection = require("./configs/connection.js")
+const routes = require("./routes/index.js")
 
 const port = 8000 || process.env.PORT;
 
@@ -18,17 +20,6 @@ app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
-mongoose
-  .connect(
-    "mongodb+srv://trongnghia:root@cluster0.byi93hs.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => {
-    console.log("Connected to Mongoose");
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+// Connect to Mongoose DB
+connection();
+routes(app);
