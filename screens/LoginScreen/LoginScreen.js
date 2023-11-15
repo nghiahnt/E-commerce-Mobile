@@ -7,17 +7,41 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import images from "../../assets/images";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "@env";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  const handleLogin = () => {
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    // Api
+    axios
+      .post(`${BASE_URL}auth/login`, user)
+      .then((res) => {
+        console.log(res);
+        const token = res.data.token;
+        AsyncStorage.setItem("authToken", token);
+        navigation.replace("Main");
+      })
+      .catch((err) => {
+        Alert.alert("Login Error", "Invalid email");
+        console.log(err);
+      });
+  };
 
   return (
     <SafeAreaView
@@ -148,14 +172,20 @@ const LoginScreen = () => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 20,
-              marginBottom: 10
+              marginBottom: 10,
             }}
+            onPress={handleLogin}
           >
             <Text style={{ fontSize: 18, color: "#fff" }}>Login</Text>
           </Pressable>
 
           <Pressable>
-            <Text style={{color: "gray"}} onPress={() => navigation.navigate("Register")} >Don't have an account? Sign up</Text>
+            <Text
+              style={{ color: "gray" }}
+              onPress={() => navigation.navigate("Register")}
+            >
+              Don't have an account? Sign up
+            </Text>
           </Pressable>
         </View>
       </KeyboardAvoidingView>
