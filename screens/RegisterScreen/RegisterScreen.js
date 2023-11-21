@@ -16,7 +16,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import images from "../../assets/images";
-import { BASE_URL } from "@env"
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
@@ -30,11 +29,11 @@ const RegisterScreen = () => {
       email: email,
       password: password,
     };
-    console.log("pressed", BASE_URL);
+    console.log(user)
 
     // send a POST  request to the backend API to register the user
     axios
-      .post(`${BASE_URL}auth/register`, user)
+      .post(`http://localhost:8000/api/auth/register`, user)
       .then((response) => {
         console.log(response);
         Alert.alert(

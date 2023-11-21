@@ -2,13 +2,15 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen/RegisterScreen";
-import HomeScreen from "../screens/HomeScreen/HomeScreen";
-
-const Stack = createNativeStackNavigator();
+import ProductInfoScreen from "../screens/ProductInfoScreen";
+import TabNavigator from "../components/TabIcons/TabNavigator";
 
 const StackNavigator = () => {
+  const Stack = createNativeStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -24,7 +26,12 @@ const StackNavigator = () => {
         />
         <Stack.Screen
           name="Main"
-          component={HomeScreen}
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Info"
+          component={ProductInfoScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
