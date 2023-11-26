@@ -17,29 +17,27 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import images from "../assets/images";
-
 function ProductInfoScreen(props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Need to investigate
 
   const route = useRoute();
 
   const { width } = Dimensions.get("window");
   const height = (width * 100) / 100;
 
-//   const [addedToCart, setAddedToCart] = useState(false);
-//   const dispatch = useDispatch();
+  const [addedToCart, setAddedToCart] = useState(false);
+  const dispatch = useDispatch();
 
-//   const addItemToCart = (item) => {
-//     setAddedToCart(true);
-//     dispatch(addItemToCart(item));
-//     setTimeout(() => {
-//       setAddedToCart(false);
-//     }, 60000);
-//   };
+  const addItemToCart = (item) => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 60000);
+  };
 
-//   const cart = useSelector((state) => state.cart.cart);
-//   console.log(cart);
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
 
   return (
     <ScrollView
@@ -163,10 +161,118 @@ function ProductInfoScreen(props) {
       </ScrollView>
 
       {/* Section 3 */}
+      <View
+        style={{
+          padding: 10,
+        }}
+      >
+        <Text style={styles.textProduct}>{route?.params?.title}</Text>
+        <Text
+          style={[
+            styles.textProduct,
+            {
+              fontWeight: "700",
+              fontSize: 18,
+              marginTop: 6,
+            },
+          ]}
+        >
+          {route?.params?.price}$
+        </Text>
+      </View>
+
+      <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
+
+      <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+        <Text>Color: </Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          {route?.params?.color}
+        </Text>
+      </View>
+
+      <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+        <Text>Size: </Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          {route?.params?.size}
+        </Text>
+      </View>
+
+      <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
+
+      <View style={{ padding: 10 }}>
+        <Text style={{ fontSize: 15, fontWeight: "bold", marginVertical: 5 }}>
+          Total : {route.params.price}$
+        </Text>
+        <Text style={{ color: "#00CED1" }}>
+          FREE delivery Tomorrow by 3 PM.Order within 10hrs 30 mins
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginVertical: 5,
+            alignItems: "center",
+            gap: 5,
+          }}
+        >
+          <Ionicons name="location" size={24} color="black" />
+
+          <Text style={{ fontSize: 15, fontWeight: "500" }}>
+            Deliver To Hoa Xuan - Da Nang 560019
+          </Text>
+        </View>
+      </View>
+
+      <Text style={{ color: "green", marginHorizontal: 10, fontWeight: "500" }}>
+        IN Stock
+      </Text>
+
+      <Pressable
+        onPress={() => addItemToCart(route?.params?.item)}
+        style={{
+          backgroundColor: "#FFC72C",
+          padding: 10,
+          borderRadius: 20,
+          justifyContent: "center",
+          alignItems: "center",
+          marginHorizontal: 10,
+          marginVertical: 10,
+        }}
+      >
+        {addedToCart ? (
+          <View>
+            <Text>Added to Cart</Text>
+          </View>
+        ) : (
+          <View>
+            <Text>Add to Cart</Text>
+          </View>
+        )}
+      </Pressable>
+
+      <Pressable
+        onPress={() => navigation.navigate("Cart")}
+        style={{
+          backgroundColor: "#FFAC1C",
+          padding: 10,
+          borderRadius: 20,
+          justifyContent: "center",
+          alignItems: "center",
+          marginHorizontal: 10,
+          marginVertical: 10,
+        }}
+      >
+        <Text>Buy Now</Text>
+      </Pressable>
     </ScrollView>
   );
 }
 
 export default ProductInfoScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textProduct: {
+    fontSize: 15,
+    fontWeight: "500",
+  },
+});

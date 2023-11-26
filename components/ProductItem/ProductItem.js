@@ -1,11 +1,24 @@
 import { Pressable, Image, Text, View } from "react-native";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { addToCart } from "../../redux/CartReducer";
 import styles from "./ProductStyle";
-import images from "../../assets/images";
 
-function ProductItem({props}) {
+function ProductItem({ props }) {
   const [addedToCart, setAddedToCart] = useState(false);
+  const dispatch = useDispatch();
+
+  const addItemToCart = (item) => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 60000);
+  };
+
+  // const cart = useSelector((state) => state.cart.cart);
+  // console.log(cart);
 
   return (
     <>
@@ -14,9 +27,9 @@ function ProductItem({props}) {
           style={{
             width: 150,
             height: 150,
-            resizeMode: "contain"
+            resizeMode: "contain",
           }}
-          source={{uri: props?.image}}
+          source={{ uri: props?.image }}
         />
         <Text numberOfLines={1} style={styles.title}>
           {props?.title}
@@ -36,12 +49,15 @@ function ProductItem({props}) {
               fontWeight: "bold",
             }}
           >
-            {props.price}
+            {props.price}$
           </Text>
-          <Text style={{ color: "#FFC72C", fontWeight: "bold" }}>{props?.rating?.rate} ratings</Text>
+          <Text style={{ color: "#FFC72C", fontWeight: "bold" }}>
+            {props?.rating?.rate} ratings
+          </Text>
         </View>
 
         <Pressable
+          onPress={() => addItemToCart(props)}
           style={{
             backgroundColor: "#FFC72C",
             padding: 10,

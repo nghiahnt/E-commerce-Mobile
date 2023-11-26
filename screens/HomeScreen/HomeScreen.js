@@ -7,23 +7,27 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 import styles from "./HomeStyles";
 import Slider from "../../components/Slider/Slider";
 import ProductItem from "../../components/ProductItem/ProductItem";
-// import BottomModalComponent from "../../components/BottomModal/BottomModal";
+import Header from "../../components/Header/Header";
+import BottomModalComponent from "../../components/BottomModal/BottomModal"; // Need to transform to compenent
+import { UserType } from "../../UserContext";
+import decodedToken from "../../decodeToken";
 
-// import { SliderBox } from "react-native-image-slider-box"; -- Need remove over package.json 
+// import { SliderBox } from "react-native-image-slider-box"; -- Need remove over package.json
 import DropDownPicker from "react-native-dropdown-picker";
+import { BottomModal, SlideAnimation, ModalContent } from "react-native-modals";
 
+// import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import BottomModal from "../../components/BottomModal/BottomModal";
+import { Entypo } from "@expo/vector-icons";
 
 const HomeScreen = () => {
   // Data - fixed
@@ -194,7 +198,39 @@ const HomeScreen = () => {
 
   const navigation = useNavigation();
 
+  // Decode token to get userId
+  const { userId, setUserId } = useContext(UserType);
+  useEffect(() => {
+    async function fetchUser() {
+      const userId = await decodedToken();
+      setUserId(userId);
+    }
+    fetchUser();
+  }, []);
+  console.log(userId);
+
+  // Addresses
   const [selectedAddress, setSelectedAddress] = useState("");
+  const [addresses, setAddresses] = useState([]);
+  useEffect(() => {
+    if (userId) {
+      fetchAddresses();
+    }
+  }, [userId, modalVisible]);
+  const fetchAddresses = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/user/addresses/${userId}`
+      );
+      const { message } = response.data;
+
+      setAddresses(message);
+      // console.log(addresses);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   const [category, setCategory] = useState("jewelery");
 
   // Select categories
@@ -205,14 +241,19 @@ const HomeScreen = () => {
     { label: "women's clothing", value: "women's clothing" },
   ]);
 
+  // Notyet used
   const [companyOpen, setCompanyOpen] = useState(true); // Fix bug
   const onGenderOpen = useCallback(() => {
     setCompanyOpen(false);
   }, []);
 
+  // Dropdown Picker
   const [open, setOpen] = useState(false);
 
-  // Fetch API products -- Need do fix bug
+  // BottomModal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Fetch API products -- Need do fix bug -- Design CRUD products
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function fetchProducts() {
@@ -231,22 +272,12 @@ const HomeScreen = () => {
       <SafeAreaView style={styles.container}>
         <ScrollView>
           {/* Header - Search */}
-          <View style={styles.viewStyle}>
-            <Pressable style={styles.pressAbleStyle}>
-              <AntDesign
-                style={{ paddingLeft: 10 }}
-                name="search1"
-                size={22}
-                color="black"
-              />
-              <TextInput placeholder="Search..." />
-            </Pressable>
-            <Feather name="mic" size={24} color="black" />
-          </View>
+          <Header />
 
           {/* Address item */}
           <View>
             <Pressable
+              onPress={() => setModalVisible(!modalVisible)}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -465,7 +496,142 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+
       {/* <BottomModal state={true} /> */}
+      {/* <BottomModalComponent /> */}
+      <BottomModal
+        onBackdropPress={() => setModalVisible(!modalVisible)}
+        swipeDirection={["up", "down"]}
+        swipeThreshold={200}
+        modalAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom",
+          })
+        }
+        onHardwareBackPress={() => setModalVisible(!modalVisible)}
+        visible={modalVisible}
+        onTouchOutside={() => setModalVisible(!modalVisible)}
+      >
+        <ModalContent style={{ width: "100%", height: 400 }}>
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: "500" }}>
+              Choose your Location
+            </Text>
+
+            <Text style={{ marginTop: 5, fontSize: 16, color: "gray" }}>
+              Select a delivery location to see product availabilty and delivery
+              options
+            </Text>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {/* Address */}
+            {addresses?.map((item, index) => (
+              <Pressable
+                onPress={() => setSelectedAddress(item)}
+                style={{
+                  width: 140,
+                  height: 140,
+                  borderColor: "#D0D0D0",
+                  borderWidth: 1,
+                  padding: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 3,
+                  marginRight: 15,
+                  marginTop: 10,
+                  backgroundColor:
+                    selectedAddress === item ? "#FBCEB1" : "white",
+                }}
+                key={index}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                    {item?.name}
+                  </Text>
+                  <Entypo name="location-pin" size={24} color="red" />
+                </View>
+
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {item?.houseNo},{item?.landmark}
+                </Text>
+
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {item?.street}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  Viet Nam, Da Nang
+                </Text>
+              </Pressable>
+            ))}
+            <Pressable
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate("Address");
+              }}
+              style={{
+                width: 140,
+                height: 140,
+                borderColor: "#D0D0D0",
+                marginTop: 10,
+                borderWidth: 1,
+                padding: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "#0066b2",
+                  fontWeight: "500",
+                }}
+              >
+                Add an Address or pick-up point
+              </Text>
+            </Pressable>
+          </ScrollView>
+          <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Entypo name="location-pin" size={22} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+                Enter an Vietnamese pincode
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Ionicons name="locate-sharp" size={22} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+                Use My Currect location
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <AntDesign name="earth" size={22} color="#0066b2" />
+
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+                Deliver outside Vietnamese
+              </Text>
+            </View>
+          </View>
+        </ModalContent>
+      </BottomModal>
     </>
   );
 };

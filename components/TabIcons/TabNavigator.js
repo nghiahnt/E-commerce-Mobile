@@ -4,6 +4,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 import HomeScreen from "../../screens/HomeScreen/HomeScreen";
+import CartScreen from "../../screens/CartScreen";
+import ProfileScreen from "../../screens/ProfileScreen";
 
 function TabNavigator({ Icon1, Icon2, tabLable, ...options }) {
   const Tab = createBottomTabNavigator();
@@ -43,10 +45,11 @@ function TabNavigator({ Icon1, Icon2, tabLable, ...options }) {
 
       <Tab.Screen
         name="Profile"
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
           tabBarLabelStyle: { color: "#008E97" },
+          headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Ionicons name="person" size={24} color="#008E97" />
@@ -58,7 +61,7 @@ function TabNavigator({ Icon1, Icon2, tabLable, ...options }) {
 
       <Tab.Screen
         name="Cart"
-        component={HomeScreen}
+        component={CartScreen}
         options={{
           tabBarLabel: "Cart",
           tabBarLabelStyle: { color: "#008E97" },
