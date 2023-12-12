@@ -22,6 +22,7 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const navigation = useNavigation();
+  // const [errorMessage, setErrorMessage] = useState("");
 
   const handleRegister = () => {
     const user = {
@@ -47,7 +48,7 @@ const RegisterScreen = () => {
       .catch((error) => {
         Alert.alert(
           "Registration Error",
-          "An error occurred while registering"
+          "Email has been registered"
         );
         console.log("registration failed", error);
       });

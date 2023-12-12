@@ -25,7 +25,7 @@ function AddAddressScreen() {
         `http://localhost:8000/api/user/addresses/${userId}`
       );
       const { message } = response.data;
-
+      
       setAddresses(message);
     } catch (error) {
       console.log("error", error);
