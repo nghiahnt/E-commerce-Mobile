@@ -16,13 +16,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import images from "../../assets/images";
-import { BASE_URL } from "@env"
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const navigation = useNavigation();
+  // const [errorMessage, setErrorMessage] = useState("");
 
   const handleRegister = () => {
     const user = {
@@ -30,11 +30,11 @@ const RegisterScreen = () => {
       email: email,
       password: password,
     };
-    console.log("pressed", BASE_URL);
+    console.log(user)
 
     // send a POST  request to the backend API to register the user
     axios
-      .post(`${BASE_URL}auth/register`, user)
+      .post(`http://localhost:8000/api/auth/register`, user)
       .then((response) => {
         console.log(response);
         Alert.alert(
@@ -48,7 +48,7 @@ const RegisterScreen = () => {
       .catch((error) => {
         Alert.alert(
           "Registration Error",
-          "An error occurred while registering"
+          "Email has been registered"
         );
         console.log("registration failed", error);
       });

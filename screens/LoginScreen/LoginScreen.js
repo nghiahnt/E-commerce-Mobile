@@ -11,16 +11,31 @@ import {
 } from "react-native";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import images from "../../assets/images";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "@env";
+import axios from "axios";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        if (token) {
+          navigation.replace("Main");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    checkLoginStatus();
+  }, []);
 
   const handleLogin = () => {
     const user = {
@@ -30,15 +45,19 @@ const LoginScreen = () => {
 
     // Api
     axios
-      .post(`${BASE_URL}auth/login`, user)
+
+      .post(`http://localhost:8000/api/auth/login`, user)
       .then((res) => {
-        console.log(res);
-        const token = res.data.token;
-        AsyncStorage.setItem("authToken", token);
-        navigation.replace("Main");
+        // console.log(res.data.message);
+        if (res.data.token !== "") {
+          const token = res.data.token;
+          AsyncStorage.setItem("authToken", token);
+          navigation.replace("Main");
+        }
+        Alert.alert("Login status", res.data.message);
       })
       .catch((err) => {
-        Alert.alert("Login Error", "Invalid email");
+        Alert.alert("Login Error", "Invalid email or password.");
         console.log(err);
       });
   };
@@ -101,7 +120,7 @@ const LoginScreen = () => {
             />
             <TextInput
               style={{
-                color: "gray",
+                color: "#000",
                 marginVertical: 10,
                 width: 300,
                 fontSize: 16,
@@ -139,7 +158,7 @@ const LoginScreen = () => {
             />
             <TextInput
               style={{
-                color: "gray",
+                color: "#000",
                 marginVertical: 10,
                 width: 300,
                 fontSize: 16,
