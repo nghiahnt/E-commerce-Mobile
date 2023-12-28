@@ -46,7 +46,7 @@ const LoginScreen = () => {
     // Api
     axios
 
-      .post(`http://localhost:8000/api/auth/login`, user)
+      .post(`https://e-commerce-backend-7puk.onrender.com/api/auth/login`, user)
       .then((res) => {
         // console.log(res.data.message);
         if (res.data.token !== "") {

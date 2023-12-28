@@ -1,6 +1,6 @@
 const styles = {
     container: {
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         marginVertical: 25,
     },
     title: {

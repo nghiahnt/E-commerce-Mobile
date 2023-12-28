@@ -34,7 +34,10 @@ const RegisterScreen = () => {
 
     // send a POST  request to the backend API to register the user
     axios
-      .post(`http://localhost:8000/api/auth/register`, user)
+      .post(
+        `https://e-commerce-backend-7puk.onrender.com/api/auth/register`,
+        user
+      )
       .then((response) => {
         console.log(response);
         Alert.alert(
@@ -46,10 +49,7 @@ const RegisterScreen = () => {
         setPassword("");
       })
       .catch((error) => {
-        Alert.alert(
-          "Registration Error",
-          "Email has been registered"
-        );
+        Alert.alert("Registration Error", "Email has been registered");
         console.log("registration failed", error);
       });
   };

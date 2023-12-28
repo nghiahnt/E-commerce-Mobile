@@ -49,7 +49,7 @@ function ConfirmationScreen() {
   const fetchAddresses = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/user/addresses/${userId}`
+        `https://e-commerce-backend-7puk.onrender.com/api/user/addresses/${userId}`
       );
       const { message } = response.data;
 
@@ -80,7 +80,7 @@ function ConfirmationScreen() {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/orders/store",
+        "https://e-commerce-backend-7puk.onrender.com/api/orders/store",
         orderData
       );
       if (response.status === 200) {

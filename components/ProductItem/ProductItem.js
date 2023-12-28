@@ -29,7 +29,7 @@ function ProductItem({ props }) {
             height: 150,
             resizeMode: "contain",
           }}
-          source={{ uri: props?.image }}
+          source={{ uri: props?.image[0].path }}
         />
         <Text numberOfLines={1} style={styles.title}>
           {props?.title}
@@ -52,7 +52,7 @@ function ProductItem({ props }) {
             {props.price}$
           </Text>
           <Text style={{ color: "#FFC72C", fontWeight: "bold" }}>
-            {props?.rating?.rate} ratings
+            {props?.rating} ratings
           </Text>
         </View>
 

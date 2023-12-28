@@ -108,7 +108,7 @@ function CartScreen() {
                 <View>
                   <Image
                     style={{ width: 140, height: 140, resizeMode: "contain" }}
-                    source={{ uri: item?.image }}
+                    source={{ uri: item?.image[0].path }}
                   />
                 </View>
 

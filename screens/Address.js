@@ -37,7 +37,10 @@ function Address() {
 
     // Store a new address
     axios
-      .post("http://localhost:8000/api/user/addresses", { userId, address })
+      .post("https://e-commerce-backend-7puk.onrender.com/api/user/addresses", {
+        userId,
+        address,
+      })
       .then((res) => {
         Alert.alert("Success", "Addresses added successfully");
         setName("");

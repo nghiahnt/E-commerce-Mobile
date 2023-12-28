@@ -74,7 +74,7 @@ const HomeScreen = () => {
       oldPrice: 25000,
       price: 19000,
       image:
-        "https://images-eu.ssl-images-amazon.com/images/G/31/wireless_products/ssserene/weblab_wf/xcm_banners_2022_in_bau_wireless_dec_580x800_once3l_v2_580x800_in-en.jpg",
+        [{path: "https://images-eu.ssl-images-amazon.com/images/G/31/wireless_products/ssserene/weblab_wf/xcm_banners_2022_in_bau_wireless_dec_580x800_once3l_v2_580x800_in-en.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/61QRgOgBx0L._SX679_.jpg",
         "https://m.media-amazon.com/images/I/61uaJPLIdML._SX679_.jpg",
@@ -91,7 +91,7 @@ const HomeScreen = () => {
       oldPrice: 74000,
       price: 26000,
       image:
-        "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Wireless/Samsung/SamsungBAU/S20FE/GW/June23/BAU-27thJune/xcm_banners_2022_in_bau_wireless_dec_s20fe-rv51_580x800_in-en.jpg",
+        [{path: "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Wireless/Samsung/SamsungBAU/S20FE/GW/June23/BAU-27thJune/xcm_banners_2022_in_bau_wireless_dec_s20fe-rv51_580x800_in-en.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/81vDZyJQ-4L._SY879_.jpg",
         "https://m.media-amazon.com/images/I/61vN1isnThL._SX679_.jpg",
@@ -108,7 +108,7 @@ const HomeScreen = () => {
       oldPrice: 16000,
       price: 14000,
       image:
-        "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Wireless/Samsung/CatPage/Tiles/June/xcm_banners_m14_5g_rv1_580x800_in-en.jpg",
+        [{path: "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Wireless/Samsung/CatPage/Tiles/June/xcm_banners_m14_5g_rv1_580x800_in-en.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/817WWpaFo1L._SX679_.jpg",
         "https://m.media-amazon.com/images/I/81KkF-GngHL._SX679_.jpg",
@@ -124,7 +124,7 @@ const HomeScreen = () => {
       oldPrice: 12999,
       price: 10999,
       image:
-        "https://images-eu.ssl-images-amazon.com/images/G/31/tiyesum/N55/June/xcm_banners_2022_in_bau_wireless_dec_580x800_v1-n55-marchv2-mayv3-v4_580x800_in-en.jpg",
+        [{path: "https://images-eu.ssl-images-amazon.com/images/G/31/tiyesum/N55/June/xcm_banners_2022_in_bau_wireless_dec_580x800_v1-n55-marchv2-mayv3-v4_580x800_in-en.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/41Iyj5moShL._SX300_SY300_QL70_FMwebp_.jpg",
         "https://m.media-amazon.com/images/I/61og60CnGlL._SX679_.jpg",
@@ -141,7 +141,7 @@ const HomeScreen = () => {
       oldPrice: 7500,
       price: 4500,
       image:
-        "https://m.media-amazon.com/images/I/61a2y1FCAJL._AC_UL640_FMwebp_QL65_.jpg",
+        [{path: "https://m.media-amazon.com/images/I/61a2y1FCAJL._AC_UL640_FMwebp_QL65_.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/61a2y1FCAJL._SX679_.jpg",
         "https://m.media-amazon.com/images/I/71DOcYgHWFL._SX679_.jpg",
@@ -158,7 +158,7 @@ const HomeScreen = () => {
       offer: "40%",
       oldPrice: 7955,
       price: 3495,
-      image: "https://m.media-amazon.com/images/I/41mQKmbkVWL._AC_SY400_.jpg",
+      image: [{path: "https://m.media-amazon.com/images/I/41mQKmbkVWL._AC_SY400_.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/71h2K2OQSIL._SX679_.jpg",
         "https://m.media-amazon.com/images/I/71BlkyWYupL._SX679_.jpg",
@@ -173,7 +173,7 @@ const HomeScreen = () => {
       offer: "40%",
       oldPrice: 7955,
       price: 3495,
-      image: "https://m.media-amazon.com/images/I/41t7Wa+kxPL._AC_SY400_.jpg",
+      image: [{path: "https://m.media-amazon.com/images/I/41t7Wa+kxPL._AC_SY400_.jpg"}],
       carouselImages: ["https://m.media-amazon.com/images/I/41t7Wa+kxPL.jpg"],
       color: "black",
       size: "Normal",
@@ -185,7 +185,7 @@ const HomeScreen = () => {
       offer: "40%",
       oldPrice: 24999,
       price: 19999,
-      image: "https://m.media-amazon.com/images/I/71k3gOik46L._AC_SY400_.jpg",
+      image: [{path: "https://m.media-amazon.com/images/I/71k3gOik46L._AC_SY400_.jpg"}],
       carouselImages: [
         "https://m.media-amazon.com/images/I/41bLD50sZSL._SX300_SY300_QL70_FMwebp_.jpg",
         "https://m.media-amazon.com/images/I/616pTr2KJEL._SX679_.jpg",
@@ -258,8 +258,10 @@ const HomeScreen = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get(`https://fakestoreapi.com/products`);
-        setProducts(response.data);
+        const response = await axios.get(
+          `https://e-commerce-backend-7puk.onrender.com/api/product/getAllProducts`
+        );
+        setProducts(response.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -374,7 +376,7 @@ const HomeScreen = () => {
               >
                 <Image
                   style={{ width: 180, height: 180, resizeMode: "contain" }}
-                  source={{ uri: item?.image }}
+                  source={{ uri: item?.image[0].path }}
                 />
               </Pressable>
             ))}
@@ -417,7 +419,7 @@ const HomeScreen = () => {
               >
                 <Image
                   style={{ width: 150, height: 150, resizeMode: "contain" }}
-                  source={{ uri: item?.image }}
+                  source={{ uri: item?.image[0].path }}
                 />
 
                 {/* Products sales content */}

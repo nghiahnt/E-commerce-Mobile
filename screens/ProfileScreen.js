@@ -27,7 +27,7 @@ function ProfileScreen() {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/user/profile/${userId}`
+          `https://e-commerce-backend-7puk.onrender.com/api/user/profile/${userId}`
         );
         const { message } = response.data;
         setUser(message);
@@ -45,7 +45,7 @@ function ProfileScreen() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/orders/${userId}`
+          `https://e-commerce-backend-7puk.onrender.com/api/orders/${userId}`
         );
         const message = response.data;
         setOrders(message);

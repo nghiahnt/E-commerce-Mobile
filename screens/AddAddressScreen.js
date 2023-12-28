@@ -22,7 +22,7 @@ function AddAddressScreen() {
   const fetchAddresses = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/user/addresses/${userId}`
+        `https://e-commerce-backend-7puk.onrender.com/api/user/addresses/${userId}`
       );
       const { message } = response.data;
       
